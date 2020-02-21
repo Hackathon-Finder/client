@@ -1,50 +1,90 @@
 <template>
-  <b-container>
-    <b-row>
+  <b-container class="bv-example-row">
+    <b-row align-h="center" align-v="center" style="height:calc(100vh - 4.6rem)">
       <b-col>
-        `<b-form @submit.prevent="onSubmit" class="input-form">
-          <div class="input-group mb-3">
-            <div class="input-group-prepend">
-              <div class="input-group-text">
-                <b-icon icon="envelope"></b-icon>
-              </div>
-            </div>
-            <input v-model="form.email" type="text" class="form-control" placeholder="Email">
+        <div style="display: flex; justify-content:center; align-items:center;">
+          <div class="image-wrapper">
+            <img src="@/assets/register-user.jpg" alt="">
           </div>
-          <div class="input-group mb-3">
-            <div class="input-group-prepend">
-              <div class="input-group-text">
-                <b-icon icon="award"></b-icon>
+          <b-form id="form-wrapper" @submit.prevent="registerOrganizer" style="text-align: right">
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <div class="input-group-text">
+                  <b-icon icon="envelope"></b-icon>
+                </div>
               </div>
+              <input 
+                v-model="form.email" 
+                type="email" 
+                class="form-control" 
+                placeholder="Email"
+                required
+              >
             </div>
-            <input v-model="form.organization" type="text" class="form-control" placeholder="Organization">
-          </div>
-          <div class="input-group mb-3">
-            <div class="input-group-prepend">
-              <div class="input-group-text">
-                <b-icon icon="person"></b-icon>
+
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <div class="input-group-text">
+                  <b-icon icon="house"></b-icon>
+                </div>
               </div>
+              <input 
+                v-model="form.organization" 
+                type="text" 
+                class="form-control" 
+                placeholder="Organization"
+                required
+              >
             </div>
-            <input v-model="form.name" type="text" class="form-control" placeholder="Full Name">
-          </div>
-          <div class="input-group mb-3">
-            <div class="input-group-prepend">
-              <div class="input-group-text">
-                <b-icon icon="phone"></b-icon>
+
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <div class="input-group-text">
+                  <b-icon icon="person"></b-icon>
+                </div>
               </div>
+              <input 
+                v-model="form.name" 
+                type="text" 
+                class="form-control" 
+                placeholder="Full Name"
+                required
+              >
             </div>
-            <input v-model="form.hp" type="text" class="form-control" placeholder="Phone Number">
-          </div>
-          <div class="input-group mb-3">
-            <div class="input-group-prepend">
-              <div class="input-group-text">
-                <b-icon icon="lock"></b-icon>
+
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <div class="input-group-text">
+                  <b-icon icon="phone"></b-icon>
+                </div>
               </div>
+              <input 
+                v-model="form.hp" 
+                type="text" 
+                class="form-control" 
+                placeholder="Phone Number"
+                required
+              >
             </div>
-            <input v-model="form.password" type="password" class="form-control" placeholder="Password">
-          </div>
-          <b-button type="submit" variant="primary">Register</b-button>
-        </b-form>
+
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <div class="input-group-text">
+                  <b-icon icon="lock"></b-icon>
+                </div>
+              </div>
+              <input 
+                v-model="form.password" 
+                type="password" 
+                class="form-control" 
+                placeholder="Password"
+                required
+              >
+            </div>
+
+            <b-button type="submit" variant="primary">Register</b-button>
+          </b-form>
+        </div>
       </b-col>
     </b-row>
   </b-container>
@@ -67,7 +107,7 @@ export default {
     }
   },
   methods: {
-    onSubmit (evt) {
+    registerOrganizer (evt) {
       this.$store.dispatch('registerOrganizer', this.form)
         .then(({ data }) => {
           swal.fire({
@@ -101,9 +141,52 @@ export default {
 </script>
 
 <style scoped>
+  .image-wrapper {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 500px;
+    overflow: hidden;
+  }
+  .image-wrapper img {
+    /* position: absolute; */
+    /* width: 500px; */
+    height: 500px;
+    /* z-index: -1; */
+  }
+  #form-wrapper {
+    padding: 2rem;
+    border: 1px #d6d6d6 solid;
+    border-radius: 4px;
+    background-color: #fff;
+  }
 
-.input-form {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-}
+  @media only screen and (max-width: 768px) {
+    .image-wrapper {
+      position: fixed !important;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: -2;
+      background-image: url("../assets/register-user.jpg");
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
+    }
+    .image-wrapper::after {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: rgba(0, 0, 0, 0.3);
+    }  
+    .image-wrapper img {
+      display: none;
+    }  
+  }
 
 </style>
