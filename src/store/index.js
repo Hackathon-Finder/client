@@ -6,8 +6,16 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
+    isLogin: false,
+    user: {}
   },
   mutations: {
+    SET_LOGIN (state, payload) {
+      state.isLogin = payload
+    },
+    SET_USER (state, payload) {
+      state.user = payload
+    }
   },
   actions: {
     registerUser (_, payload) {
