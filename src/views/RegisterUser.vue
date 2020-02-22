@@ -13,10 +13,10 @@
                   <b-icon icon="envelope"></b-icon>
                 </div>
               </div>
-              <input 
-                v-model="form.email" 
-                type="email" 
-                class="form-control" 
+              <input
+                v-model="form.email"
+                type="email"
+                class="form-control"
                 placeholder="Email"
                 required
               >
@@ -28,10 +28,10 @@
                   <b-icon icon="person"></b-icon>
                 </div>
               </div>
-              <input 
-                v-model="form.name" 
-                type="text" 
-                class="form-control" 
+              <input
+                v-model="form.name"
+                type="text"
+                class="form-control"
                 placeholder="Full Name"
                 required
               >
@@ -43,10 +43,10 @@
                   <b-icon icon="phone"></b-icon>
                 </div>
               </div>
-              <input 
-                v-model="form.hp" 
-                type="text" 
-                class="form-control" 
+              <input
+                v-model="form.hp"
+                type="text"
+                class="form-control"
                 placeholder="Phone Number"
                 required
               >
@@ -58,10 +58,10 @@
                   <b-icon icon="lock"></b-icon>
                 </div>
               </div>
-              <input 
-                v-model="form.password" 
-                type="password" 
-                class="form-control" 
+              <input
+                v-model="form.password"
+                type="password"
+                class="form-control"
                 placeholder="Password"
                 required
               >
@@ -132,21 +132,24 @@ export default {
     align-items: center;
     width: 500px;
     overflow: hidden;
+    z-index: -1;
   }
   .image-wrapper img {
-    /* position: absolute; */
-    /* width: 500px; */
     height: 500px;
-    /* z-index: -1; */
   }
   #form-wrapper {
     padding: 2rem;
     border: 1px #d6d6d6 solid;
     border-radius: 4px;
     background-color: #fff;
+    margin-left: -50px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
   }
 
   @media only screen and (max-width: 768px) {
+    #form-wrapper {
+      margin-left: 0;
+    }
     .image-wrapper {
       position: fixed !important;
       top: 0;
@@ -167,10 +170,10 @@ export default {
       width: 100vw;
       height: 100vh;
       background-color: rgba(0, 0, 0, 0.3);
-    }  
+    }
     .image-wrapper img {
       display: none;
-    }  
+    }
   }
 
 </style>
