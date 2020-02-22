@@ -12,14 +12,13 @@
         <b-navbar> -->
           <b-navbar-nav>
             <!-- <b-nav-item href="#" @click.prevent="changePage('listArticle')">Home</b-nav-item> -->
-            <b-nav-item href="#">Login</b-nav-item>
-            <!-- Navbar dropdowns -->
+            <b-nav-item to="/login">Login</b-nav-item>
             <b-nav-item-dropdown text="Register" right>
               <b-dropdown-item href="#">
-                <b-nav-item to='/register-user'>Register as User</b-nav-item>
+                <b-nav-item to="/register-user">Register as User</b-nav-item>
               </b-dropdown-item>
               <b-dropdown-item href="#">
-                <b-nav-item to='/register-organizer'>Register as Organizer</b-nav-item>
+                <b-nav-item to="/register-organizer">Register as Organizer</b-nav-item>
               </b-dropdown-item>
             </b-nav-item-dropdown>
             <!-- <b-nav-item href="#" @click.prevent="signOut">Sign Out</b-nav-item> -->
