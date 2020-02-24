@@ -74,10 +74,10 @@ export default {
 }
 
 .btn-group-vertical > .btn, .btn-group-vertical > .btn-group {
-  background-color:white !important;
+  background-color:#adbbf8 !important;
   font-size: 1.25rem;
   border-radius: 5px !important;
-  color: #666666 !important;
+  color: black !important;
   border: 0.5px solid #d6d6d6;
   width: 25rem;
   height: 3.25rem;

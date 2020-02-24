@@ -1,18 +1,32 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div class="home border">
+    <OrganizerHome v-if="userStatus.role == 'Organizer'" />
+    <UserHome v-else-if="userStatus.role == 'User'" />
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
+import OrganizerHome from '../components/OrganizerHome'
+import UserHome from '../components/UserHome'
 
 export default {
   name: 'Home',
   components: {
-    HelloWorld
+    OrganizerHome, UserHome
+  },
+  computed: {
+    userStatus () {
+      return this.$store.state.user
+    },
+    getAllEvents () {
+      return this.$store.state.events
+    }
   }
 }
 </script>
+
+<style scoped>
+.home {
+  background-color: #f8f8f8;
+}
+</style>

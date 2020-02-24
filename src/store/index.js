@@ -7,10 +7,8 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     isLogin: false,
-    user: {
-      id: '1',
-      role: 'organizer'
-    }
+    user: {},
+    events: {}
   },
   mutations: {
     SET_LOGIN (state, payload) {
@@ -18,6 +16,9 @@ export default new Vuex.Store({
     },
     SET_USER (state, payload) {
       state.user = payload
+    },
+    SET_EVENTS (state, payload) {
+      state.events = payload
     }
   },
   actions: {
@@ -73,6 +74,18 @@ export default new Vuex.Store({
           token: localStorage.getItem('token')
         }
       })
+    },
+    getAllEvents ({ commit }) {
+      axios({
+        method: 'POST',
+        url: 'events',
+      })
+        .then (({ data }) => {
+          commit('SET_EVENTS', data)
+        })
+        .catch(err => {
+          console.log(err)
+        })
     }
   },
   modules: {
