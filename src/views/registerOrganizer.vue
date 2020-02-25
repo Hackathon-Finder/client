@@ -102,7 +102,7 @@ export default {
         email: '',
         password: '',
         hp: '',
-        role: 'Organizer'
+        role: 'organizer'
       }
     }
   },
@@ -119,13 +119,14 @@ export default {
           localStorage.setItem('token', data.token)
           this.$store.commit('SET_LOGIN', true)
           this.$store.commit('SET_USER', data.user)
+          this.$router.push('/profile')
           this.reset()
         })
         .catch((err) => {
           swal.fire({
             icon: 'error',
             title: 'Oops...',
-            text: err.response.data.message
+            text: err.response.data.errors
           })
         })
     },
@@ -135,6 +136,12 @@ export default {
       this.email = ''
       this.password = ''
       this.hp = ''
+    }
+  },
+  created () {
+    const valid = localStorage.getItem('token')
+    if(valid) {
+      this.$router.push('/home')
     }
   }
 }

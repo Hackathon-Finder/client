@@ -8,27 +8,97 @@ const routes = [
   {
     path: '/',
     name: 'Landing',
+    beforeEnter: (to, from, next) => {
+      const valid = localStorage.getItem('token')
+      if (!valid) {
+        next()
+      } else {
+        next({
+          name: "Home" // back to safety route //
+        });
+      }
+    },
     component: Landing
   },
   {
     path: '/login',
     name: 'Login',
+    beforeEnter: (to, from, next) => {
+      const valid = localStorage.getItem('token')
+      if (!valid) {
+        next()
+      } else {
+        next({
+          name: "Home" // back to safety route //
+        });
+      }
+    },
     component: () => import(/* webpackChunkName: "login" */ '../views/Login.vue')
+  },
+  {
+    path: '/home',
+    name: 'Home',
+    beforeEnter: (to, from, next) => {
+      const valid = localStorage.getItem('token')
+      if (valid) {
+        next()
+      } else {
+        next({
+          name: "Login" // back to safety route //
+        });
+      }
+    },
+    component: () => import(/* webpackChunkName: "about" */ '../views/Home.vue')
   },
   {
     path: '/register-user',
     name: 'RegisterUser',
+    beforeEnter: (to, from, next) => {
+      const valid = localStorage.getItem('token')
+      if (!valid) {
+        next()
+      } else {
+        next({
+          name: "Home" // back to safety route //
+        });
+      }
+    },
     component: () => import(/* webpackChunkName: "registerUser" */ '../views/RegisterUser.vue')
   },
   {
     path: '/register-organizer',
     name: 'RegisterOrganizer',
+    beforeEnter: (to, from, next) => {
+      const valid = localStorage.getItem('token')
+      if (!valid) {
+        next()
+      } else {
+        next({
+          name: "Home" // back to safety route //
+        });
+      }
+    },
     component: () => import(/* webpackChunkName: "registerOrganizer" */ '../views/registerOrganizer.vue')
   },
   {
     path: '/events/:id',
     name: 'SingleEvent',
     component: () => import(/* webpackChunkName: "SingleEvent" */ '../views/SingleEvent.vue')
+  },
+  {
+    path: '/profile',
+    name: 'Profile',
+    beforeEnter: (to, from, next) => {
+      const valid = localStorage.getItem('token')
+      if (valid) {
+        next()
+      } else {
+        next({
+          name: "Login" // back to safety route //
+        });
+      }
+    },
+    component: () => import(/* webpackChunkName: "Profile" */ '../views/Profile.vue')
   }
 ]
 

@@ -24,7 +24,7 @@
         </b-col>
         <b-col cols="12" sm="12" md="12" lg="8" xl="9" class=" mb-3">
           <div class="img-wrapper">
-            <img src="https://picsum.photos/500" alt="">
+            <img :src="event.pictures" alt="">
           </div>
         </b-col>
         <b-col

@@ -10,7 +10,7 @@
           </b-navbar-brand>
         <!-- </b-navbar>
         <b-navbar> -->
-          <b-navbar-nav>
+          <b-navbar-nav v-if="!this.isLogin">
             <!-- <b-nav-item href="#" @click.prevent="changePage('listArticle')">Home</b-nav-item> -->
             <b-nav-item to="/login">Login</b-nav-item>
             <b-nav-item-dropdown text="Register" right>
@@ -23,6 +23,11 @@
             </b-nav-item-dropdown>
             <!-- <b-nav-item href="#" @click.prevent="signOut">Sign Out</b-nav-item> -->
           </b-navbar-nav>
+          <b-navbar-nav v-else>
+            <!-- <b-nav-item href="#" @click.prevent="changePage('listArticle')">Home</b-nav-item> -->
+            <b-nav-item to="/profile" >Profile</b-nav-item>
+            <b-nav-item @click.prevent="logout">Logout</b-nav-item>
+          </b-navbar-nav>
         </b-navbar>
       </b-row>
     </b-container>
@@ -30,8 +35,38 @@
 </template>
 
 <script>
-export default {
+import swal from 'sweetalert2'
 
+export default {
+  methods: {
+    logout () {
+      swal.fire({
+        title: 'Are you sure to Logout?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, Logout!'
+      }).then(result => {
+        if (result.value) {
+          swal.fire({
+            title: 'Success!',
+            text: 'See you soon.....',
+            icon: 'success',
+            confirmButtonText: 'Oke'
+          })
+          localStorage.removeItem('token')
+          this.$store.commit('SET_LOGIN', false)
+          this.$router.push('/')
+        }
+      })
+    }
+  },
+  computed: {
+    isLogin () {
+      return this.$store.state.isLogin
+    }
+  }
 }
 </script>
 
