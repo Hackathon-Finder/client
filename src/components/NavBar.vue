@@ -3,10 +3,10 @@
     <b-container>
       <b-row>
         <b-navbar id="nav-wrapper" style="display: flex; justify-content: space-between; width: 100%;">
-          <b-navbar-brand to='/' style="display:flex; align-items:center">
-            <img class="img-logo mr-2" src="@/assets/coding.png" alt="" fluid />
+          <b-navbar-brand id="brand-text" to='/' style="display:flex; align-items:center">
+            <img class="img-logo mr-2" src="@/assets/coding.png" alt="Colabs Logo" title="Colabs" fluid />
             <div class="text-logo">Colabs</div>
-            <div>Hackathon Portal</div>
+            <div class="subtext-logo">Hackathon Portal</div>
           </b-navbar-brand>
         <!-- </b-navbar>
         <b-navbar> -->
@@ -48,6 +48,9 @@ export default {
   @media only screen and (max-width: 768px) {
     #nav-wrapper {
       background-color: #fff;
+    }
+    #brand-text .subtext-logo {
+      display: none !important;
     }
   }
 </style>

@@ -5,8 +5,10 @@ import GAuth from 'vue-google-oauth2'
 import App from './App.vue'
 import router from './router'
 import store from './store'
+import wysiwyg from 'vue-wysiwyg'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
+import 'vue-wysiwyg/dist/vueWysiwyg.css'
 
 const gauthOption = {
   clientId: process.env.VUE_APP_GOOGLE_ID
@@ -17,6 +19,7 @@ Vue.use(BootstrapVueIcons)
 Vue.use(GSignInButton)
 Vue.use(GAuth, gauthOption)
 Vue.config.productionTip = false
+Vue.use(wysiwyg, { hideModules: { image: true } })
 
 new Vue({
   router,
