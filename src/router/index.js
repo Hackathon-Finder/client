@@ -24,6 +24,11 @@ const routes = [
     path: '/register-organizer',
     name: 'RegisterOrganizer',
     component: () => import(/* webpackChunkName: "registerOrganizer" */ '../views/registerOrganizer.vue')
+  },
+  {
+    path: '/events/:id',
+    name: 'SingleEvent',
+    component: () => import(/* webpackChunkName: "SingleEvent" */ '../views/SingleEvent.vue')
   }
 ]
 

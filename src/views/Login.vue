@@ -95,8 +95,6 @@ export default {
     },
     reset () {
       this.form.password = ''
-      this.form.name = ''
-      this.form.hp = ''
       this.form.email = ''
     },
     onSignInSuccess: function (googleUser) {
@@ -146,8 +144,6 @@ export default {
     overflow: hidden;
   }
   .image-wrapper img {
-    /* position: absolute; */
-    /* width: 500px; */
     height: 500px;
     z-index: -1;
   }
