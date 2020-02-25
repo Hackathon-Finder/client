@@ -64,7 +64,6 @@ export default {
   },
   computed: {
     isLogin () {
-      console.log(this.$store.state.isLogin)
       return this.$store.state.isLogin
     }
   }

@@ -1,7 +1,7 @@
 <template>
   <div class="home border">
-    <OrganizerHome v-if="userStatus.role == 'Organizer'" />
-    <UserHome v-else-if="userStatus.role == 'User'" />
+    <OrganizerHome v-if="userStatus.role == 'organizer'" />
+    <UserHome v-else-if="userStatus.role == 'user'" />
   </div>
 </template>
 

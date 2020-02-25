@@ -11,6 +11,13 @@ export default {
   name: 'App',
   components: {
     NavBar
+  },
+  created () {
+    const valid = localStorage.getItem('token')
+    if (valid) {
+      this.$store.commit('SET_LOGIN', true)
+      this.$store.dispatch('loginToken')
+    }
   }
 }
 </script>

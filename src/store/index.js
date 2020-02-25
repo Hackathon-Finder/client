@@ -8,7 +8,7 @@ export default new Vuex.Store({
   state: {
     isLogin: false,
     user: {},
-    events: {}
+    events: []
   },
   mutations: {
     SET_LOGIN (state, payload) {
@@ -75,12 +75,47 @@ export default new Vuex.Store({
         }
       })
     },
+    loginToken ({ commit }) {
+      axios({
+        method: 'GET',
+        url: 'users/login/token',
+        headers: {
+          token: localStorage.getItem('token')
+        }
+      })
+        .then(({ data }) => {
+          commit('SET_USER', data.user)
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    },
     getAllEvents ({ commit }) {
       axios({
-        method: 'POST',
+        method: 'GET',
         url: 'events',
+        headers: {
+          token: localStorage.getItem('token')
+        }
       })
         .then (({ data }) => {
+          console.log(data)
+          commit('SET_EVENTS', data)
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    },
+    getEventsOrganizer ({ commit }) {
+      axios({
+        method: 'GET',
+        url: 'events/owner',
+        headers: {
+          token: localStorage.getItem('token')
+        }
+      })
+        .then (({ data }) => {
+          console.log(data)
           commit('SET_EVENTS', data)
         })
         .catch(err => {
