@@ -4,18 +4,17 @@
         width="800"
         height="500"
         theme="vs-dark"
-        :language="programLanguage"
+        language="javascript"
         :options="options"
         @change="onChange"
         ></MonacoEditor>
-    <b-button v-on:click.prevent="submit">Submit</b-button>
     </div>
 </template>
 
 <script>
 import MonacoEditor from 'monaco-editor-vue';
 export default {
-  name: 'createAnwer',
+  name: 'monaco',
   components: {
     MonacoEditor
   },
@@ -24,7 +23,6 @@ export default {
       options: {
           
       },
-      programLanguage: ""
     }
   },
   methods: {
