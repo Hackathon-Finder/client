@@ -25,21 +25,6 @@
             <div class="input-group mb-3">
               <div class="input-group-prepend">
                 <div class="input-group-text">
-                  <b-icon icon="house"></b-icon>
-                </div>
-              </div>
-              <input
-                v-model="form.organization"
-                type="text"
-                class="form-control"
-                placeholder="Organization"
-                required
-              >
-            </div>
-
-            <div class="input-group mb-3">
-              <div class="input-group-prepend">
-                <div class="input-group-text">
                   <b-icon icon="person"></b-icon>
                 </div>
               </div>
@@ -48,21 +33,6 @@
                 type="text"
                 class="form-control"
                 placeholder="Full Name"
-                required
-              >
-            </div>
-
-            <div class="input-group mb-3">
-              <div class="input-group-prepend">
-                <div class="input-group-text">
-                  <b-icon icon="phone"></b-icon>
-                </div>
-              </div>
-              <input
-                v-model="form.hp"
-                type="text"
-                class="form-control"
-                placeholder="Phone Number"
                 required
               >
             </div>
@@ -98,10 +68,8 @@ export default {
     return {
       form: {
         name: '',
-        organization: '',
         email: '',
         password: '',
-        hp: '',
         role: 'organizer'
       }
     }
@@ -132,10 +100,8 @@ export default {
     },
     reset () {
       this.name = ''
-      this.organization = ''
       this.email = ''
       this.password = ''
-      this.hp = ''
     }
   },
   created () {

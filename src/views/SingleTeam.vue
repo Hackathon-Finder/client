@@ -25,13 +25,10 @@ export default {
       this.$store.dispatch('getTeam', this.$route.params.id)
         .then(({data}) => {
           this.team = data
-          console.log(data.skillset, 'ini skillset')
-          console.log(this.team, 'ini team')
           return this.$store.dispatch('getUserRecommendation', data.skillset)
         })
         .then(({data}) => {
           this.userRecommendation = data
-          console.log(this.userRecommendation)
         })
         .catch(err => {
           swal.fire({
@@ -45,7 +42,6 @@ export default {
       this.$store.dispatch('getUserRecommendation', this.$route.params.id)
         .then(({data}) => {
           this.userRecommendation = data
-          console.log(this.userRecommendation)
         })
         .catch(err => {
           swal.fire({

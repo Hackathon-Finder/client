@@ -8,6 +8,7 @@ export default new Vuex.Store({
   state: {
     isLogin: false,
     user: {},
+    userDetail: {},
     events: []
   },
   mutations: {
@@ -16,6 +17,9 @@ export default new Vuex.Store({
     },
     SET_USER (state, payload) {
       state.user = payload
+    },
+    SET_USERDETAIL (state, payload) {
+      state.userDetail = payload
     },
     SET_EVENTS (state, payload) {
       state.events = payload
@@ -121,7 +125,6 @@ export default new Vuex.Store({
         })
     },
     addEvents (_, payload) {
-      console.log(payload)
       return axios({
         method: 'POST',
         url: 'events',
@@ -191,7 +194,6 @@ export default new Vuex.Store({
       })
     },
     getUserRecommendation (_, payload) {
-      console.log(payload, 'ini payload')
       return axios({
         method: 'POST',
         url: `users/skill`,
@@ -217,6 +219,21 @@ export default new Vuex.Store({
           answer: payload.answer
         }
       })
+    },
+    getUserDetail ({ commit }, payload) {
+      axios({
+        method: 'GET',
+        url: `users/${payload}`,
+        headers: {
+          token: localStorage.getItem('token')
+        }
+      })
+        .then(({ data }) => {
+          commit('SET_USERDETAIL', data)
+        })
+        .catch(err => {
+          console.log(err)
+        })
     }
   },
   modules: {

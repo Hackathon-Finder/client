@@ -10,6 +10,7 @@
                 <b-form-file
                   v-if="editableImage"
                   style="overflow: hidden"
+                  v-model="pict"
                   type="file"
                   ref="file"
                   placeholder="Image"
@@ -48,61 +49,61 @@
               <div class="input-group-text ico">
                 <b-icon icon="envelope"></b-icon>
               </div>
-              <input type="text" class="form-control font-weight-bold" disabled id="inlineFormInputGroup" v-model="user.email" >
-            </div>
-            <div class="input-group mb-3">
-              <div class="input-group-text ico">
-                <b-icon icon="house"></b-icon>
-              </div>
-              <input v-if="user.organization !== ''" type="text" class="form-control font-weight-bold" disabled id="inlineFormInputGroup" v-model="user.organization" >
-              <p v-else style="border: none" class="form-control font-italic" id="inlineFormInputGroup" > add organization </p>
+              <input type="text" class="form-control font-weight-bold" disabled v-model="user.email" >
             </div>
             <div class="input-group mb-3">
               <div class="input-group-text ico">
                 <b-icon icon="person"></b-icon>
               </div>
-              <input type="text" class="form-control font-weight-bold" disabled id="inlineFormInputGroup" v-model="user.name" >
+              <input type="text" class="form-control font-weight-bold" disabled v-model="user.name" >
+            </div>
+            <div class="input-group mb-3">
+              <div class="input-group-text ico">
+                <b-icon icon="house"></b-icon>
+              </div>
+              <input v-if="user.organization" type="text" class="form-control font-weight-bold" disabled v-model="user.organization" >
+              <p v-else style="border: none" class="form-control font-italic" > add organization </p>
             </div>
             <div class="input-group mb-3">
               <div class="input-group-text ico">
                 <b-icon icon="phone"></b-icon>
               </div>
-              <input v-if="user.hp !== ''" type="text" class="form-control font-weight-bold" disabled id="inlineFormInputGroup" v-model="user.hp" >
-              <p v-else style="border: none" class="form-control font-italic" id="inlineFormInputGroup" > add phone number </p>
+              <input v-if="user.hp !== ''" type="text" class="form-control font-weight-bold" disabled v-model="user.hp" >
+              <p v-else style="border: none" class="form-control font-italic" > add phone number </p>
             </div>
           </div>
           <div v-if="editable" class="mt-4">
             <div class="input-group mb-3">
               <div class="input-group-prepend">
-                <div class="input-group-text">
+                <div class="input-group-text ico">
                   <b-icon icon="envelope"></b-icon>
                 </div>
               </div>
-              <input type="text" class="form-control" id="inlineFormInputGroup" v-model="user.email" placeholder="Email" >
+              <input type="text" class="form-control font-weight-bold" disabled v-model="user.email" placeholder="Email" >
             </div>
             <div class="input-group mb-3">
               <div class="input-group-prepend">
-                <div class="input-group-text">
-                  <b-icon icon="house"></b-icon>
-                </div>
-              </div>
-              <input type="text" class="form-control" id="inlineFormInputGroup" v-model="user.organization" placeholder="Organization" >
-            </div>
-            <div class="input-group mb-3">
-              <div class="input-group-prepend">
-                <div class="input-group-text">
+                <div class="input-group-text ico">
                   <b-icon icon="person"></b-icon>
                 </div>
               </div>
-              <input type="text" class="form-control" id="inlineFormInputGroup" v-model="user.name" placeholder="Full name" >
+              <input type="text" class="form-control font-weight-bold" disabled v-model="user.name" placeholder="Full name" >
             </div>
             <div class="input-group mb-3">
               <div class="input-group-prepend">
-                <div class="input-group-text">
+                <div class="input-group-text ico">
+                  <b-icon icon="house"></b-icon>
+                </div>
+              </div>
+              <input type="text" class="form-control" v-model="organization" placeholder="Organization" >
+            </div>
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <div class="input-group-text ico">
                   <b-icon icon="phone"></b-icon>
                 </div>
               </div>
-              <input type="text" class="form-control" id="inlineFormInputGroup" v-model="user.hp" placeholder="Phone number" >
+              <input type="text" class="form-control" v-model="hp" placeholder="Phone number" >
             </div>
           </div>
           <div class="mt-4">
@@ -113,9 +114,9 @@
             </ul>
           </div>
           <div class="mt-3 d-flex">
-            <p class="mr-4"><strong>1</strong> Event opened</p>
-            <p class="mr-4"><strong>0</strong> Event started</p>
-            <p><strong>0</strong> Event ended</p>
+            <p class="mr-4"><strong>{{ getAllOpen }}</strong> Event opened</p>
+            <p class="mr-4"><strong>{{ getAllStart }}</strong> Event started</p>
+            <p><strong>{{ getAllEnd }}</strong> Event ended</p>
           </div>
         </div>
       </div>
@@ -124,9 +125,14 @@
 </template>
 
 <script>
+import swal from 'sweetalert2'
+
 export default {
   data() {
     return {
+      hp: "",
+      pict: null,
+      organization: "",
       editable: false,
       editableImage: false
     }
@@ -134,17 +140,92 @@ export default {
   computed: {
     user () {
       return this.$store.state.user
+    },
+    getAllOpen () {
+      const events = this.$store.state.events
+      const result = []
+
+      for (let i = 0; i < events.length; i++) {
+        if(events[i].status == 'open') result.push(events[i])
+      }
+
+      return result.length
+    },
+    getAllStart () {
+      const events = this.$store.state.events
+      const result = []
+
+      for (let i = 0; i < events.length; i++) {
+        if(events[i].status == 'started') result.push(events[i])
+      }
+
+      return result.length
+    },
+    getAllEnd () {
+      const events = this.$store.state.events
+      const result = []
+
+      for (let i = 0; i < events.length; i++) {
+        if(events[i].status == 'ended') result.push(events[i])
+      }
+      return result.length
     }
+  },
+  created () {
+    this.$store.dispatch('getEventsOrganizer')
   },
   methods: {
     editProfile () {
       this.editable = true
     },
     saveProfile () {
-      this.editable = false
+      let result = {
+        hp: this.hp, 
+        organization: this.organization
+      }
+      this.$store.dispatch('updateUser', result)
+        .then(({ data }) => {
+          swal.fire({
+            icon: 'success',
+            title: 'Profile updated',
+            showConfirmButton: false,
+            timer: 1500
+          })
+          this.$store.dispatch('loginToken')
+          this.hp = data.hp
+          this.organization = data.organization
+          this.editable = false
+        })
+        .catch((err) => {
+          swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: err.response.data.errors
+          })
+        })
     },
     saveImage () {
-      this.editableImage = false
+      const formData = new FormData()
+      formData.append('pict', this.pict)
+      this.$store.dispatch('updateUser', formData)
+        .then(({ data }) => {
+          swal.fire({
+            icon: 'success',
+            title: 'Profile updated',
+            showConfirmButton: false,
+            timer: 1500
+          })
+          this.$store.dispatch('loginToken')
+          this.pict = null,
+          this.editableImage = false
+        })
+        .catch((err) => {
+          swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: err.response.data.errors
+          })
+        })
     },
     editImage () {
       this.editableImage = true
@@ -158,6 +239,11 @@ export default {
 .form-control:disabled {
     background-color: white;
     border: none;
+}
+
+.form-control {
+    border: none;
+    border-bottom: 1px solid
 }
 
 .ico {

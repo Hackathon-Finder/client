@@ -4,6 +4,14 @@
       <div class="col col-sm-12 col-12 col-md-4">
         <div class="col- d-flex justify-content-center p-3">
           <div class="card" style="border: none"> 
+            <div class=" d-flex pb-3 justify-content-center">
+              <b-button v-if="user.subscribe =='unsub'" @click.prevent="setSubscribe('subscribe')" variant="primary" class="pl-3 pr-3">
+                <i class="fas fa-bell pr-2"></i>Subscribe Event
+              </b-button>
+              <b-button v-else-if="user.subscribe =='subscribe'" @click.prevent="setSubscribe('unsub')" variant="danger" class="pl-3 pr-3">
+                <i class="fas fa-bell-slash pr-2"></i>Unsubscribe Event
+              </b-button>
+            </div>
             <img :src="user.pict" class="card-img-top" alt="profile image">
             <div class="p-2 row">
               <div  class="col col-sm-12 col-12 col-md-8">
@@ -49,20 +57,20 @@
               <div class="input-group-text ico">
                 <b-icon icon="envelope"></b-icon>
               </div>
-              <input type="text" class="form-control font-weight-bold" disabled id="inlineFormInputGroup" v-model="user.email" >
+              <input type="text" class="form-control font-weight-bold" disabled v-model="user.email" >
             </div>
             <div class="input-group mb-3">
               <div class="input-group-text ico">
                 <b-icon icon="person"></b-icon>
               </div>
-              <input type="text" class="form-control font-weight-bold" disabled id="inlineFormInputGroup" v-model="user.name" >
+              <input type="text" class="form-control font-weight-bold" disabled v-model="user.name" >
             </div>
             <div class="input-group mb-3">
               <div class="input-group-text ico">
                 <b-icon icon="phone"></b-icon>
               </div>
-              <input v-if="user.hp !== ''" type="text" class="form-control font-weight-bold" disabled id="inlineFormInputGroup" v-model="user.hp" >
-              <p v-else style="border: none" class="form-control font-italic" id="inlineFormInputGroup" > add phone number </p>
+              <input v-if="user.hp !== ''" type="text" class="form-control font-weight-bold" disabled v-model="user.hp" >
+              <p v-else style="border: none" class="form-control font-italic" > add phone number </p>
             </div>
             <div class="input-group mb-3">
               <div v-if="user.skillset.length == 0" class="input-group-text ico">
@@ -78,7 +86,7 @@
                 </button>
               </div>
               <input v-if="user.skillset.length !== 0" type="text" class="form-control font-weight-bold" disabled id="inlineFormInputGroup">
-              <p v-else style="border: none" class="form-control font-italic" id="inlineFormInputGroup" > add skillset </p>
+              <p v-else style="border: none" class="form-control font-italic" > add skillset </p>
             </div>
             <div class="pl-3">
               <p class="font-italic">*test your skill, click the skill button</p>
@@ -89,19 +97,19 @@
               <div class="input-group-text ico">
                 <b-icon icon="envelope"></b-icon>
               </div>
-              <input type="text" class="form-control font-weight-bold" id="inlineFormInputGroup" disabled v-model="user.email" placeholder="Email" >
+              <input type="text" class="form-control font-weight-bold" disabled v-model="user.email" placeholder="Email" >
             </div>
             <div class="input-group mb-3">
               <div class="input-group-text ico">
                 <b-icon icon="person"></b-icon>
               </div>
-              <input type="text" class="form-control font-weight-bold" id="inlineFormInputGroup" disabled v-model="user.name" placeholder="Full name" >
+              <input type="text" class="form-control font-weight-bold" disabled v-model="user.name" placeholder="Full name" >
             </div>
             <div class="input-group mb-3">
               <div class="input-group-text ico">
                 <b-icon icon="phone"></b-icon>
               </div>
-              <input type="text" class="form-control" id="inlineFormInputGroup" v-model="phone" placeholder="Phone number" >
+              <input type="text" class="form-control" v-model="phone" placeholder="Phone number" >
             </div>
             <div class="input-group mb-3">
               <div class="input-group-text ico">
@@ -141,7 +149,7 @@
               <button v-for="(skillset, index) in addSkillset" :key="index" 
                 type="button" 
                 class="btn btn-primary btn-sm m-1">
-                {{ skillset.skill }} - {{ skillset.level }}
+                {{ skillset.skill }} - {{ convertSkill(skillset.level) }}
               </button>
             </div>
             
@@ -197,9 +205,30 @@ export default {
     }
   },
   methods: {
+    setSubscribe(e) {
+      let result = {
+        subscribe: e, 
+      }
+      this.$store.dispatch('updateUser', result)
+        .then(({ data }) => {
+          swal.fire({
+            icon: 'success',
+            title: `Success to ${e}`,
+            showConfirmButton: false,
+            timer: 1500
+          })
+          this.$store.dispatch('loginToken')
+        })
+        .catch((err) => {
+          swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: err.response.data.errors
+          })
+        })
+    },
     skillTest (e) {
       this.$router.push(`/skilltest/${e.skill}`)
-      console.log(e.skill)
     },
     convertSkill (e) {
       if(e == 1) return 'Beginner'
@@ -217,10 +246,9 @@ export default {
       }
       this.$store.dispatch('updateUser', result)
         .then(({ data }) => {
-          console.log(data)
           swal.fire({
             icon: 'success',
-            title: 'Login success, Welcome',
+            title: 'Profile updated',
             showConfirmButton: false,
             timer: 1500
           })
@@ -242,10 +270,9 @@ export default {
       formData.append('pict', this.pict)
       this.$store.dispatch('updateUser', formData)
         .then(({ data }) => {
-          console.log(data)
           swal.fire({
             icon: 'success',
-            title: 'Login success, Welcome',
+            title: 'Profile updated',
             showConfirmButton: false,
             timer: 1500
           })
