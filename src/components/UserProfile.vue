@@ -81,7 +81,7 @@
               <p v-else style="border: none" class="form-control font-italic" id="inlineFormInputGroup" > add skillset </p>
             </div>
             <div class="pl-3">
-              <p class="font-italic">*test your skill, click the skill botton</p>
+              <p class="font-italic">*test your skill, click the skill button</p>
             </div>
           </div>
           <div v-if="editable" class="mt-4">
@@ -149,7 +149,7 @@
           <div class="mt-4">
             <ul class="nav nav-tabs d-flex justify-content-between">
               <li class="nav-item">
-                <a class="nav-link active">Rewiews</a>
+                <a class="nav-link active">Reviews</a>
               </li>
             </ul>
           </div>
