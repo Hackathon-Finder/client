@@ -2,20 +2,18 @@
   <div class="card mb-4">
     <div class="row no-gutters">
       <div class="col-md-4">
-        <img :src="event.pictures" class="card-img" alt="loading image...">
+        <div style="height: 263px; overflow: hidden">
+          <img :src="event.pictures" class="card-img" alt="loading image...">
+        </div>
       </div>
       <div class="col-md-6">
         <div class="card-body">
-          <h4 class="card-title">{{ event.title }}</h4>
-          <p class="card-text">{{ this.cuttingSummary(event.summary) }}</p>
-          <div class="row pl-3 info mt-5">
-            <p style="color: #a27fec" class="mr-5">
-              <i class="fas fa-users mr-2"></i>
-              Max. member {{ event.team_size }} 
-            </p>
+          <h3 class="card-title">{{ event.title }}</h3>
+          <p class="card-text summary" v-html="this.cuttingSummary(event.summary)" ></p>
+          <div class="info mt-4">
             <p style="color: #a27fec">
-              <i class="fas fa-map-marker-alt mr-2"></i>
-              {{ event.location }} 
+              <i class="fas fa-users mr-2"></i>
+              Max. member {{ event.max_size }} 
             </p>
           </div>
         </div>
@@ -54,11 +52,11 @@ export default {
   props: ['event'],
   methods: {
     cuttingSummary(e) {
-      return e.slice(0, 200) + "..."
+      return e.slice(0, 1500) + "..."
     },
     getDate(e) {
       const result = e.split("-")
-      return (result[0])
+      return (result[2])
     },
     getMonth(e) {
       const result = e.split("-")
@@ -74,7 +72,7 @@ export default {
       else if(result[1] == "09") month = "SEP"
       else if(result[1] == "10") month = "OKT"
       else if(result[1] == "11") month = "NOV"
-      else if(result[1] == "12") month = "DEV"
+      else if(result[1] == "12") month = "DEC"
       return (month)
     },
     detail() {
@@ -85,6 +83,11 @@ export default {
 </script>
 
 <style scoped>
+
+img[data-v-d8abbe04] {
+  height: auto;
+}
+
 .card {
   border-radius: 0;
   color: #6d6f71
@@ -129,7 +132,7 @@ img {
   /* width: 500px; */
   height: 100%;
   width: 100%;
-  border-radius: 0
+  border-radius: 0;
   /* z-index: -1; */
 }
 

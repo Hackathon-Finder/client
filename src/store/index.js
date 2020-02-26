@@ -99,7 +99,6 @@ export default new Vuex.Store({
         }
       })
         .then (({ data }) => {
-          console.log(data)
           commit('SET_EVENTS', data)
         })
         .catch(err => {
@@ -115,12 +114,32 @@ export default new Vuex.Store({
         }
       })
         .then (({ data }) => {
-          console.log(data)
           commit('SET_EVENTS', data)
         })
         .catch(err => {
           console.log(err)
         })
+    },
+    addEvents (_, payload) {
+      console.log(payload)
+      return axios({
+        method: 'POST',
+        url: 'events',
+        data: payload,
+        headers: {
+          token: localStorage.getItem('token')
+        }
+      })
+    },
+    updateUser(_, payload) {
+      return axios({
+        method: 'PATCH',
+        url: `users`,
+        data: payload,
+        headers: {
+          token: localStorage.getItem('token')
+        }
+      })
     }
   },
   modules: {

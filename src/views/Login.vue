@@ -80,7 +80,6 @@ export default {
             showConfirmButton: false,
             timer: 1500
           })
-          console.log(data)
           localStorage.setItem('token', data.token)
           this.$store.commit('SET_LOGIN', true)
           this.$store.commit('SET_USER', data.user)
