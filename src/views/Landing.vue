@@ -23,7 +23,7 @@
 export default {
   methods: {
     searchRouter () {
-      console.log('masukk')
+      
     },
     createRouter () {
       if (localStorage.getItem('token')) this.$router.push('/')
