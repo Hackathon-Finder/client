@@ -99,6 +99,11 @@ const routes = [
       }
     },
     component: () => import(/* webpackChunkName: "Profile" */ '../views/Profile.vue')
+  },
+  {
+    path: '/team/:id',
+    name: 'SingleTeam',
+    component: () => import(/* webpackChunkName: "SingleTeam" */ '../views/SingleTeam.vue')
   }
 ]
 

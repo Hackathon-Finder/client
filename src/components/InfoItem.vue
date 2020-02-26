@@ -31,7 +31,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .info-item {
   display: flex;
   width: 100%;
