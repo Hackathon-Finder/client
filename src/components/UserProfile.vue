@@ -10,6 +10,7 @@
                 <b-form-file
                   v-if="editableImage"
                   style="overflow: hidden"
+                  v-model="pict"
                   type="file"
                   ref="file"
                   placeholder="Image"
@@ -64,18 +65,23 @@
               <p v-else style="border: none" class="form-control font-italic" id="inlineFormInputGroup" > add phone number </p>
             </div>
             <div class="input-group mb-3">
-              <div v-if="addSkillset.length == 0" class="input-group-text ico">
+              <div v-if="user.skillset.length == 0" class="input-group-text ico">
                 <i class="fas fa-code"></i>
               </div>
-              <input v-if="user.skillset.length !== 0" type="text" class="form-control font-weight-bold" disabled id="inlineFormInputGroup" v-model="user.skillset" >
-              <div v-if="addSkillset.length !== 0" class="ml-3">
-                <button v-for="(skillset, index) in addSkillset" :key="index" 
+              <div v-if="user.skillset.length !== 0" class="ml-3">
+                <button v-for="(skillset, index) in user.skillset" :key="index" 
+                  @click.prevent="skillTest(skillset)"
                   type="button" 
                   class="btn btn-primary btn-sm m-1">
-                  {{ skillset.skill }} - {{ skillset.level }}
+                  {{ skillset.skill }} -
+                  {{ convertSkill(skillset.level) }}
                 </button>
               </div>
+              <input v-if="user.skillset.length !== 0" type="text" class="form-control font-weight-bold" disabled id="inlineFormInputGroup">
               <p v-else style="border: none" class="form-control font-italic" id="inlineFormInputGroup" > add skillset </p>
+            </div>
+            <div class="pl-3">
+              <p class="font-italic">*test your skill, click the skill botton</p>
             </div>
           </div>
           <div v-if="editable" class="mt-4">
@@ -178,6 +184,7 @@ export default {
         skill: "Pick skill",
         level: "Pick level"
       },
+      pict: null,
       phone: "",
       addSkillset: [],
       editable: false,
@@ -190,6 +197,16 @@ export default {
     }
   },
   methods: {
+    skillTest (e) {
+      this.$router.push(`/skilltest/${e.skill}`)
+      console.log(e.skill)
+    },
+    convertSkill (e) {
+      if(e == 1) return 'Beginner'
+      else if(e == 2) return 'Intermediate'
+      else if(e == 3) return 'Advance'
+      else if(e == 4) return 'Expert'
+    },
     editProfile () {
       this.editable = true
     },
@@ -221,7 +238,28 @@ export default {
         })
     },
     saveImage () {
-      this.editableImage = false
+      const formData = new FormData()
+      formData.append('pict', this.pict)
+      this.$store.dispatch('updateUser', formData)
+        .then(({ data }) => {
+          console.log(data)
+          swal.fire({
+            icon: 'success',
+            title: 'Login success, Welcome',
+            showConfirmButton: false,
+            timer: 1500
+          })
+          this.$store.dispatch('loginToken')
+          this.pict = null,
+          this.editableImage = false
+        })
+        .catch((err) => {
+          swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: err.response.data.errors
+          })
+        })
     },
     editImage () {
       this.editableImage = true

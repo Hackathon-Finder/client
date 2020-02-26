@@ -107,7 +107,7 @@ const routes = [
     component: () => import(/* webpackChunkName: "SingleTeam" */ '../views/SingleTeam.vue')
   },
   {
-    path: '/skilltest',
+    path: '/skilltest/:skill',
     name: 'skilltest',
     component: Monaco
   }
