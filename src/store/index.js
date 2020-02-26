@@ -202,6 +202,21 @@ export default new Vuex.Store({
           token: localStorage.getItem('token')
         }
       })
+    },
+    updateSkill(_, payload) {
+      return axios({
+        method: 'PATCH',
+        url: `users/skillset`,
+        headers:{
+          token: localStorage.getItem('token')
+        },
+        data:{
+          skill: payload.skill,
+          questionId: '1',
+          verifiedPoints: 70,
+          answer: payload.answer
+        }
+      })
     }
   },
   modules: {
