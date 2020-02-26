@@ -30,7 +30,7 @@ export default {
   data() {
     return {
       buttonTitle:"Programming Language",
-      languages:['JavaScript','Java','Python','C#','PHP','C++','C','TypeScript','Ruby','Swift','Go','Kotlin','Perl','SQL','VBA','HTML','CSS'],
+      languages:['JavaScript','Java','Python','C#','PHP','C++','C','TypeScript','Ruby','Swift','Go','Kotlin'],
       options: {
           
       },
@@ -47,6 +47,14 @@ export default {
     },
     submit(){
         console.log('answer is:',this.answer, 'language is:', this.buttonTitle)
+        this.$store.dispatch('updateSkill', {answer: this.answer, skill: this.buttonTitle})
+        .then(({data})=>{
+          console.log(data)
+          this.$router.push('/')
+        })
+        .catch(err=>{
+          console.log(err)
+        })
     }
   }
 }

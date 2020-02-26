@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Landing from '../views/Landing.vue'
+import Monaco from '../views/Monaco.vue'
 
 Vue.use(VueRouter)
 
@@ -104,6 +105,11 @@ const routes = [
     path: '/team/:id',
     name: 'SingleTeam',
     component: () => import(/* webpackChunkName: "SingleTeam" */ '../views/SingleTeam.vue')
+  },
+  {
+    path: '/skilltest',
+    name: 'skilltest',
+    component: Monaco
   }
 ]
 
