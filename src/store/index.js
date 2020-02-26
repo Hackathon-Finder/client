@@ -213,7 +213,7 @@ export default new Vuex.Store({
         data:{
           skill: payload.skill,
           questionId: '1',
-          verifiedPoints: 70,
+          verifiedPoint: 70,
           answer: payload.answer
         }
       })

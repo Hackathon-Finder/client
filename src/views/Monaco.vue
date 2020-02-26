@@ -3,9 +3,7 @@
       <div class="col"></div>
       <div class="col">
         <div>{{question}}</div>
-          <b-dropdown id="dropdown-offset" offset="25" :text="buttonTitle" class="m-2">
-            <b-dropdown-item v-for="(item,i) in languages" :key="i" href="#" v-on:click.prevent="changeTitle(item)">{{item}}</b-dropdown-item>
-          </b-dropdown>
+        <b-button disabled>{{buttonTitle}}</b-button>
           <MonacoEditor
           width="800"
           height="500"
@@ -27,10 +25,12 @@ export default {
   components: {
     MonacoEditor
   },
+  created(){
+    this.buttonTitle = this.$route.params.skill
+  },
   data() {
     return {
-      buttonTitle:"Programming Language",
-      languages:['JavaScript','Java','Python','C#','PHP','C++','C','TypeScript','Ruby','Swift','Go','Kotlin'],
+      buttonTitle:"",
       options: {
           
       },
@@ -39,18 +39,13 @@ export default {
     }
   },
   methods: {
-    changeTitle(value){
-      this.buttonTitle = value
-    },
     onChange(value) {
       this.answer = value
     },
     submit(){
-        console.log('answer is:',this.answer, 'language is:', this.buttonTitle)
         this.$store.dispatch('updateSkill', {answer: this.answer, skill: this.buttonTitle})
         .then(({data})=>{
-          console.log(data)
-          this.$router.push('/')
+          this.$router.push('/profile')
         })
         .catch(err=>{
           console.log(err)
