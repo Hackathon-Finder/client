@@ -64,18 +64,22 @@
               <p v-else style="border: none" class="form-control font-italic" id="inlineFormInputGroup" > add phone number </p>
             </div>
             <div class="input-group mb-3">
-              <div v-if="addSkillset.length == 0" class="input-group-text ico">
+              <div v-if="user.skillset.length == 0" class="input-group-text ico">
                 <i class="fas fa-code"></i>
               </div>
-              <input v-if="user.skillset.length !== 0" type="text" class="form-control font-weight-bold" disabled id="inlineFormInputGroup" v-model="user.skillset" >
-              <div v-if="addSkillset.length !== 0" class="ml-3">
-                <button v-for="(skillset, index) in addSkillset" :key="index" 
+              <div v-if="user.skillset.length !== 0" class="ml-3">
+                <button v-for="(skillset, index) in user.skillset" :key="index" 
                   type="button" 
                   class="btn btn-primary btn-sm m-1">
-                  {{ skillset.skill }} - {{ skillset.level }}
+                  {{ skillset.skill }} -
+                  {{ convertSkill(skillset.level) }}
                 </button>
               </div>
+              <input v-if="user.skillset.length !== 0" type="text" class="form-control font-weight-bold" disabled id="inlineFormInputGroup">
               <p v-else style="border: none" class="form-control font-italic" id="inlineFormInputGroup" > add skillset </p>
+            </div>
+            <div class="p-3">
+              <p>test your skil</p>
             </div>
           </div>
           <div v-if="editable" class="mt-4">
@@ -190,6 +194,12 @@ export default {
     }
   },
   methods: {
+    convertSkill (e) {
+      if(e == 1) return 'Beginner'
+      else if(e == 2) return 'Intermediate'
+      else if(e == 3) return 'Advance'
+      else if(e == 4) return 'Expert'
+    },
     editProfile () {
       this.editable = true
     },
