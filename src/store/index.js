@@ -55,7 +55,7 @@ export default new Vuex.Store({
     updateEvent (_, payload) {
       const data = payload.data
       return axios({
-        method: 'PUT',
+        method: 'PATCH',
         url: `events/update/${payload._id}`,
         data,
         headers: {
@@ -131,11 +131,73 @@ export default new Vuex.Store({
         }
       })
     },
+    createTeam (_, payload) {
+      return axios({
+        method: 'POST',
+        url: 'teams/',
+        data: {
+          name: payload.name,
+          ownerId: payload.ownerId,
+          max_size: payload.max_size,
+          skillset: payload.skillset,
+          eventId: payload.id
+        },
+        headers: {
+          token: localStorage.getItem('token')
+        }
+      })
+    },
     updateUser(_, payload) {
       return axios({
         method: 'PATCH',
         url: `users`,
         data: payload,
+        headers: {
+          token: localStorage.getItem('token')
+        }
+      })
+    },
+    addMember (_, payload) {
+      return axios({
+        method: 'PATCH',
+        url: `teams/addmember/${payload.teamId}`,
+        data: {
+          userId: payload.userId
+        },
+        headers: {
+          token: localStorage.getItem('token')
+        }
+      })
+    },
+    addApplicant (_, payload) {
+      return axios({
+        method: 'PATCH',
+        url: `events/addapplicants/${payload.id}`,
+        data: {
+          teamId: payload.teamId
+        },
+        headers: {
+          token: localStorage.getItem('token')
+        }
+      })
+    },
+    getTeam (_, payload) {
+      return axios({
+        method: 'GET',
+        url: `teams/${payload}`,
+        headers: {
+          token: localStorage.getItem('token')
+        }
+      })
+    },
+    getUserRecommendation (_, payload) {
+      console.log(payload, 'ini payload')
+      return axios({
+        method: 'POST',
+        url: `users/skill`,
+        data: {
+          skillset: payload
+        },
         headers: {
           token: localStorage.getItem('token')
         }

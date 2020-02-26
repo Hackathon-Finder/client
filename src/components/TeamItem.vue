@@ -1,9 +1,9 @@
 <template>
-  <div>
-    <div class="d-flex header-wrapper">
-      <h5>{{team.name}}</h5>
+  <div @click="$router.push(`/team/${team._id}`)">
+    <div class="d-flex align-items-center header-wrapper">
+      <div>{{team.name}}</div>
       <div class="ml-auto">
-        <b-button>Join</b-button>
+        <b-button size="sm" variant="primary" v-if="canJoin">Join</b-button>
       </div>
     </div>
     <hr />
@@ -12,7 +12,7 @@
       <h6 class="mb-3">Members: {{team.team_size}}/{{team.max_size}}</h6>
       <p class="mb-3">Skillset :</p>
       <div class="mb-3" v-for="skillset in team.skillset" :key="skillset.id">
-        <b-badge pill variant="primary">
+        <b-badge pill variant="warning">
           {{skillset.skill}}
         </b-badge>
       </div>
@@ -26,12 +26,25 @@ export default {
   name: 'TeamItem',
   data () {
     return {
-
+    }
+  },
+  computed: {
+    canJoin () {
+      if (
+        this.team.status === 'open' && 
+        this.$store.state.user._id !== this.team.ownerId &&
+        this.$store.state.user.role !== 'organizer') {
+        return true
+      } else {
+        return false
+      }
     }
   }
 }
 </script>
 
 <style>
-
+.header-wrapper {
+  font-weight: bold;
+}
 </style>

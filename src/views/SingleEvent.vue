@@ -49,6 +49,7 @@
                 block
                 width="100%"
                 :min="today"
+                value-as-date
                 v-model="rawFromDate"
                 v-if="editFromDate">
                 <div class="d-flex">
@@ -77,6 +78,7 @@
                 block
                 width="100%"
                 :min="new Date(event.date[0])"
+                value-as-date
                 v-model="rawToDate"
                 v-if="editToDate">
                 <div class="d-flex">
@@ -97,8 +99,9 @@
                 :icon="'far fa-hourglass'"
                 :header="'Status'"
                 :content="event.status"
+                @click.native="handleEditStatus"
               />
-              <div class="mb-3">
+              <div class="mb-3" v-if="editStatus">
                 <b-form-group label="Status">
                   <b-form-radio-group
                     v-model="selected"
@@ -125,8 +128,9 @@
                 :icon="'far fa-address-card'"
                 :header="'Max Member'"
                 :content="maxPerson"
+                @click.native="handleEditTeamSize"
               />
-              <div class="mb-3">
+              <div class="mb-3" v-if="editTeamSize">
                 <b-input class="mb-3" v-model="event.team_size" />
                 <div class="d-flex">
                   <b-button
@@ -137,7 +141,6 @@
                   >
                     Set Max Member
                   </b-button>
-
                 </div>
               </div>
             </b-col>
@@ -169,7 +172,11 @@
           <div class="flex-column align-items-end block-wrapper">
             <div class="d-flex justify-content-between">
               <h2>Participant</h2>
-              <b-button variant="primary" v-if="canCreateTeam">Create Team</b-button>
+              <b-button 
+                variant="primary" 
+                v-if="canCreateTeam"
+                v-b-modal.modal-create-team
+              >Create Team</b-button>
             </div>
             <hr />
             <div>
@@ -199,6 +206,59 @@
         </b-col>
       </b-row>
     </b-container>
+    <div>
+      <b-modal id="modal-create-team" title="Create Team" hide-footer>
+        <b-form id="form-wrapper" @submit.prevent="createTeam">
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <div class="input-group-text">
+                <i class="far fa-id-card"></i>
+              </div>
+            </div>
+            <input
+              v-model="teamName"
+              class="form-control"
+              placeholder="Team Name"
+              required
+            >
+          </div>
+          <ul 
+            v-for="set in createdTeamSkillSet" 
+            :key="set.id"
+          >
+            <li>{{set.skill}} | {{set.level}}</li>
+          </ul>
+          <div class="d-flex justify-content-between">
+            <select id="dropdown-skills" @click="pickSkill" class="flex-grow:1">
+              <option disabled selected>Pick Skill</option>
+              <option value="JavaScript">JavaScript</option>
+              <option value="Java">Java</option>
+              <option value="Phyton">Phyton</option>
+              <option value="C#">C#</option>
+              <option value="PHP">PHP</option>
+              <option value="C++">C++</option>
+              <option value="C">C</option>
+              <option value="TypeScript">TypeScript</option>
+              <option value="Ruby">Ruby</option>
+              <option value="Swift">Swift</option>
+              <option value="Go">Go</option>
+              <option value="Kotlin">Kotlin</option>
+            </select>
+            <select id="dropdown-level" @click="pickLevel" flex-grow="1">
+              <option disabled selected>Pick Level</option>
+              <option value="1">Beginner</option>
+              <option value="2">Intermediate</option>
+              <option value="3">Advance</option>
+              <option value="4">Expert</option>
+            </select>
+            <b-button variant="outline-primary" @click="addSkillSet">Add Skill Set</b-button>
+          </div>
+          <div class="d-flex justify-content-end mt-3">
+            <b-button @click.prevent="createTeam" variant="primary">Create</b-button>
+          </div>
+        </b-form>
+      </b-modal>
+    </div>
   </div>
 </template>
 
@@ -212,21 +272,29 @@ export default {
   data () {
     return {
       event: {},
-      selected: '',
       fromDate: '',
       toDate: '',
       rawFromDate: null,
       rawToDate: null,
       editFromDate: false,
       editToDate: false,
+      editStatus: false,
+      editTeamSize: false,
       popup: '',
       isEdit: 'notEditable',
       isShow: 'editable',
+      teamName: '',
+      selected: '',
       options: [
         { text: 'Open', value: 'open' },
         { text: 'Started', value: 'started' },
         { text: 'Ended', value: 'ended' }
-      ]
+      ],
+      createdTeamSkillSet: [],
+      skillSet: {
+        skill: '',
+        level: ''
+      }
     }
   },
   name: 'SingleEvent',
@@ -278,6 +346,28 @@ export default {
           this.editToDate = false
         } else {
           this.editToDate = true
+        }
+      }
+    },
+    handleEditStatus () {
+      if (this.role === 'user') {
+        return false
+      } else if (this.role === 'organizer') {
+        if (this.editStatus === true) {
+          this.editStatus = false
+        } else {
+          this.editStatus = true
+        }
+      }
+    },
+    handleEditTeamSize () {
+      if (this.role === 'user') {
+        return false
+      } else if (this.role === 'organizer' && this.event.status === 'open') {
+        if (this.editTeamSize === true) {
+          this.editTeamSize = false
+        } else {
+          this.editTeamSize = true
         }
       }
     },
@@ -354,6 +444,45 @@ export default {
             text: err.response.data.errors
           })
         })
+    },
+    pickSkill (event) {
+      this.skillSet.skill = event.target.value
+    },
+    pickLevel (event) {
+      this.skillSet.level = event.target.value
+    },
+    addSkillSet () {
+      const skillset = {...this.skillSet}
+      this.createdTeamSkillSet = [...this.createdTeamSkillSet, skillset]
+    },
+    createTeam () {
+      const payload = {
+        id: this.$route.params.id,
+        name: this.teamName,
+        ownerId: this.$store.state.user._id,
+        max_size: this.event.team_size,
+        skillset: this.createdTeamSkillSet
+      }
+
+      this.$store.dispatch('createTeam', payload)
+        .then(({data}) => {
+          return this.$store.dispatch('addMember', {userId: this.$store.state.user._id, teamId: data._id})
+        })
+        .then(({data}) => {
+          return this.$store.dispatch('addApplicant', {id: this.$route.params.id, teamId: data._id})
+        })
+        .then(({data}) => {
+          this.fetchEvent()
+          this.$bvModal.hide('modal-create-team')
+        })
+        .catch(err => {
+          this.fetchEvent()
+          swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: err.response.data.errors
+          })
+        })
     }
   },
   created () {
@@ -373,10 +502,14 @@ export default {
     },
     canCreateTeam () {
       const role = this.role
-      const id = this.$store.state.user.id
+      const id = this.$store.state.user._id
       if (role === 'user') {
         // return true
-        if (this.event.teams.includes(id) || this.event.applicants.includes(id)) {
+
+        console.log(this.event.teams, 'team')
+        console.log(this.event.applicants, 'applicants')
+        console.log(id, 'id')
+        if ((this.event.teams && this.event.teams.includes(id)) || (this.event.teams && this.event.applicants.includes(id))) {
           return false
         } else {
           return true
