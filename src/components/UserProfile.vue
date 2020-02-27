@@ -325,7 +325,7 @@ export default {
 
 .set-detail {
   height: 87vh !important;
-  overflow: scroll
+  overflow-y: auto
 }
 
 
