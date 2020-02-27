@@ -23,7 +23,8 @@
 export default {
   methods: {
     searchRouter () {
-      
+      if (localStorage.getItem('token')) this.$router.push('/')
+      else this.$router.push('/login')
     },
     createRouter () {
       if (localStorage.getItem('token')) this.$router.push('/')

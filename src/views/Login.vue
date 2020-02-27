@@ -36,16 +36,7 @@
                 required
               >
             </div>
-            <div class="d-flex justify-content-between">
-              <g-signin-button
-                class="btn btn-primary"
-                :params="googleSignInParams"
-                @success="onSignInSuccess"
-                @error="onSignInError">
-                  <i class="fab fa-google"></i> | Google
-              </g-signin-button>
-              <b-button type="submit" variant="primary">Login</b-button>
-            </div>
+            <b-button type="submit" variant="primary">Login</b-button>
           </b-form>
         </div>
       </b-col>
@@ -64,9 +55,6 @@ export default {
       form: {
         password: '',
         email: ''
-      },
-      googleSignInParams: {
-        client_id: process.env.VUE_APP_GOOGLE_ID
       }
     }
   },
@@ -97,39 +85,6 @@ export default {
     reset () {
       this.form.password = ''
       this.form.email = ''
-    },
-    onSignInSuccess: function (googleUser) {
-      const idToken = googleUser.getAuthResponse().id_token
-      axios({
-        method: 'post',
-        url: `http://localhost:3000/glogin/${idToken}`,
-        data: {}
-      })
-        .then(({ data }) => {
-          localStorage.setItem('token', data.token)
-          localStorage.setItem('username', data.username)
-          localStorage.setItem('userId', data.userId)
-          swal.fire(
-            'Login success!',
-            'You are now logged in',
-            'success'
-          )
-          this.$router.push('/')
-        })
-        .catch(err => {
-          swal.fire({
-            icon: 'error',
-            title: 'Error',
-            text: err.response.data.message
-          })
-        })
-    },
-    onSignInError: function (error) {
-      swal.fire({
-        icon: 'error',
-        title: 'Error',
-        text: error
-      })
     }
   },
   created () {

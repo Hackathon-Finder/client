@@ -131,7 +131,7 @@
                 @click.native="handleEditTeamSize"
               />
               <div class="mb-3" v-if="editTeamSize">
-                <b-input class="mb-3" v-model="event.team_size" />
+                <b-input class="mb-3" v-model="event.max_size" />
                 <div class="d-flex">
                   <b-button
                     size="sm"
@@ -312,7 +312,6 @@ export default {
           this.rawFromDate = data.date[0]
           this.rawToDate = data.date[1]
           this.selected = data.status
-          console.log(data)
           if (this.role === 'user') {
             this.popup = ''
           } else if (this.role === 'organizer') {
@@ -402,7 +401,6 @@ export default {
         })
       this.isEdit = 'notEditable'
       this.isShow = 'editable'
-      console.log(payload)
       // this.$store.dispatch('updateOne', payload)
     },
     setDate () {
@@ -498,7 +496,7 @@ export default {
       return new Date(today)
     },
     maxPerson () {
-      return this.event.team_size + ' Person'
+      return this.event.max_size + ' Person'
     },
     canCreateTeam () {
       const role = this.role
@@ -506,9 +504,6 @@ export default {
       if (role === 'user') {
         // return true
 
-        console.log(this.event.teams, 'team')
-        console.log(this.event.applicants, 'applicants')
-        console.log(id, 'id')
         if ((this.event.teams && this.event.teams.includes(id)) || (this.event.teams && this.event.applicants.includes(id))) {
           return false
         } else {

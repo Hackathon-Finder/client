@@ -57,6 +57,9 @@ export default {
           })
           localStorage.removeItem('token')
           this.$store.commit('SET_LOGIN', false)
+          this.$store.commit('SET_USER', {})
+          this.$store.commit('SET_USERDETAIL', {})
+          this.$store.commit('SET_EVENTS', [])
           this.$router.push('/')
         }
       })

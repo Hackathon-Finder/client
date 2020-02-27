@@ -2,7 +2,7 @@
   <div>
     <div id="image-wraper"></div>
     <b-container class="text-center" id="content">
-      <div class="p-5 mt-5 mb-5">
+      <div class="p-5 mt-5 mb-3">
         <b-button @click.prevent="showForm" variant="link" class="addHackhatons">
           <h2 class="mr-3">
             <i class="fas fa-code mr-3"></i> 
@@ -77,9 +77,9 @@
       </div>
       <!-- <Search class="mt-5 mb-5" /> -->
       <CardList v-for="event in getAllOpen" :key="event._id" :event="event" />
-      <h1 v-if="getAllStart.length !== 0">Event started</h1>
+      <h1 class="p-5" v-if="getAllStart.length !== 0">Event started</h1>
       <CardList v-for="event in getAllStart" :key="event._id" :event="event" />
-      <h1  v-if="getAllEnd.length !== 0">Event ended</h1>
+      <h1 class="p-5"  v-if="getAllEnd.length !== 0">Event ended</h1>
       <CardList v-for="event in getAllEnd" :key="event._id" :event="event" />
     </b-container>
   </div>
@@ -226,6 +226,13 @@ export default {
 
 #content {
   margin-top: -300px;
+}
+
+h1 {
+  font-family: 'Rajdhani', arial;
+  font-weight: bold;
+  font-size: 3rem;
+  color: #6d6f71
 }
 
 </style>

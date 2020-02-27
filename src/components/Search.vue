@@ -4,7 +4,7 @@
       <h2> <i class="fas fa-map-marker-alt mr-3"></i> hackathons in</h2>
     </div>
     <div class="col-md-6">
-      <input type="text" class="form-control" placeholder="Indonesia">
+      <input type="text" disabled class="form-control" placeholder="Indonesia">
     </div>
   </div>
 </template>
@@ -21,6 +21,12 @@ export default {
     font-family: 'Rajdhani', arial;
     margin-bottom: 0;
   }
+
+  .form-control:disabled {
+    background: none;
+    border: none;
+    border-bottom: 1px solid white
+}
 
   .form-control {
     color: white;

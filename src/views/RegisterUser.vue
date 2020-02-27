@@ -40,21 +40,6 @@
             <div class="input-group mb-3">
               <div class="input-group-prepend">
                 <div class="input-group-text">
-                  <b-icon icon="phone"></b-icon>
-                </div>
-              </div>
-              <input
-                v-model="form.hp"
-                type="text"
-                class="form-control"
-                placeholder="Phone Number"
-                required
-              >
-            </div>
-
-            <div class="input-group mb-3">
-              <div class="input-group-prepend">
-                <div class="input-group-text">
                   <b-icon icon="lock"></b-icon>
                 </div>
               </div>
@@ -86,8 +71,7 @@ export default {
         role: 'user',
         password: '',
         name: '',
-        email: '',
-        hp: ''
+        email: ''
       }
     }
   },
@@ -118,7 +102,6 @@ export default {
     reset () {
       this.form.password = ''
       this.form.name = ''
-      this.form.hp = ''
       this.form.email = ''
     }
   }

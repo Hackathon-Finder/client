@@ -110,6 +110,11 @@ const routes = [
     path: '/skilltest/:skill',
     name: 'skilltest',
     component: Monaco
+  },
+  {
+    path: '/users/:id',
+    name: 'UserProfile',
+    component: () => import(/* webpackChunkName: "UserProfile" */ '../views/UserProfileDetail.vue')
   }
 ]
 

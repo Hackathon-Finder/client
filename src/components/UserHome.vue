@@ -2,11 +2,19 @@
   <div>
     <div id="image-wraper"></div>
     <b-container class="text-center" id="content">
-      <Search class="mt-5 mb-5" />
+      <div class="p-5 mt-5 mb-3 text-center">
+        <b-button variant="link" class="title">
+          <h2 class="mr-3">
+            <i class="fas fa-laptop-code mr-3"></i>
+            <strong>hackathons in Indonesia</strong>
+          </h2>
+        </b-button>
+      </div>
+      <!-- <Search class="mt-5 mb-5" /> -->
       <CardList v-for="event in getAllOpen" :key="event._id" :event="event" />
-      <h1 v-if="getAllStart.length !== 0">Event started</h1>
+      <h1 class="p-5" v-if="getAllStart.length !== 0">Event started</h1>
       <CardList v-for="event in getAllStart" :key="event._id" :event="event" />
-      <h1 v-if="getAllEnd.length !== 0">Event ended</h1>
+      <h1 class="p-5" v-if="getAllEnd.length !== 0">Event ended</h1>
       <CardList v-for="event in getAllEnd" :key="event._id" :event="event" />
     </b-container>
   </div>
@@ -67,6 +75,19 @@ export default {
   background-size: cover;
 }
 
+.title {
+  color: white;
+  font-family: 'Rajdhani', arial;
+  margin-bottom: 0;
+  text-decoration: none;
+  cursor: auto
+}
+
+.title:hover {
+  border-bottom: 1px solid white;
+  border-right: 1px solid white
+}
+
 #image-wraper::after {
   background-color: rgba(222, 0, 0, 0.3);
 }  
@@ -75,12 +96,16 @@ h1 {
   font-family: 'Rajdhani', arial;
   font-weight: bold;
   font-size: 3rem;
-  margin-top: 5rem;
-  margin-bottom: 5rem;
   color: #6d6f71
 }
 
 #content {
   margin-top: -300px;
+}
+
+h2 {
+  color: white;
+  font-family: 'Rajdhani', arial;
+  margin-bottom: 0;
 }
 </style>
