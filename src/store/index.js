@@ -228,12 +228,117 @@ export default new Vuex.Store({
           token: localStorage.getItem('token')
         }
       })
-        .then(({ data }) => {
-          commit('SET_USERDETAIL', data)
-        })
-        .catch(err => {
-          console.log(err)
-        })
+      .then(({ data }) => {
+        commit('SET_USERDETAIL', data)
+      })
+      .catch(err => {
+        console.log(err)
+      })
+    },
+    inviteUser (_, payload) {
+      return axios({
+        method: 'POST',
+        url: `users/invite`,
+        data: payload,
+        headers: {
+          token: localStorage.getItem('token')
+        }
+      })
+    },
+    lockTeam (_, payload) {
+      return axios({
+        method: 'PATCH',
+        url: `events/addteam/${payload.id}`,
+        data: {
+          teamId: payload.teamId 
+        },
+        headers: {
+          token: localStorage.getItem('token')
+        }
+      })
+    },
+    deleteTeam (_, payload) {
+      return axios({
+        method: 'DELETE',
+        url: `teams/${payload}`,
+        headers: {
+          token: localStorage.getItem('token')
+        }
+      })
+    },
+    joinTeam (_, payload) {
+      return axios({
+        method: 'PATCH',
+        url: `teams/addapplicant/${payload.id}`,
+        data: {
+          userId: payload.userId
+        },
+        headers: {
+          token: localStorage.getItem('token')
+        }
+      })
+    },
+    addMemberToTeam (_,payload) {
+      return axios({
+        method: 'PATCH',
+        url: `teams/addmember/${payload.id}`,
+        data: {
+          userId: payload.userId
+        },
+        headers: {
+          token: localStorage.getItem('token')
+        }
+      })
+    },
+    removeMemberFromTeam (_,payload) {
+      return axios({
+        method: 'PATCH',
+        url: `teams/removemember/${payload.id}`,
+        data: {
+          userId: payload.userId
+        },
+        headers: {
+          token: localStorage.getItem('token')
+        }
+      })
+    },
+    removeApplicantFromTeam (_,payload) {
+      return axios({
+        method: 'PATCH',
+        url: `teams/removeapplicant/${payload.id}`,
+        data: {
+          userId: payload.userId
+        },
+        headers: {
+          token: localStorage.getItem('token')
+        }
+      })
+    },
+    updateStatusTeam (_, payload) {
+      return axios({
+        method: 'PATCH',
+        url: `teams/status/${payload.id}`,
+        data: {
+          status: payload.status
+        },
+        headers: {
+          token: localStorage.getItem('token')
+        }
+      }) 
+    },
+    reviewUser (_, payload) {
+      return axios({
+        method: 'PATCH',
+        url: `users/review/${payload.id}`,
+        data: {
+          teamId: payload.teamId,
+          rank: payload.rank,
+          comment: payload.comment
+        },
+        headers: {
+          token: localStorage.getItem('token')
+        }
+      })
     }
   },
   modules: {

@@ -137,7 +137,7 @@
                     size="sm"
                     variant="outline-primary"
                     class="ml-auto"
-                    @click="updateField('team_size')"
+                    @click="updateField('max_size')"
                   >
                     Set Max Member
                   </b-button>
@@ -182,13 +182,8 @@
             <div>
               Locked Team
             </div>
-            <div class="team-locked mb-3" v-for="team in event.teams" :key="team.id">
-              <div v-if="event.teams.length > 0">
-                <TeamItem :team="team" />
-              </div>
-              <div v-else>
-                No Teams locked
-              </div>
+            <div class="team-locked" v-for="team in event.teams" :key="team.id">
+              <TeamItem :team="team"/>
             </div>
             <hr />
             <div class="mb-3">
@@ -222,14 +217,15 @@
               required
             >
           </div>
-          <ul 
-            v-for="set in createdTeamSkillSet" 
-            :key="set.id"
-          >
-            <li>{{set.skill}} | {{set.level}}</li>
-          </ul>
-          <div class="d-flex justify-content-between">
-            <select id="dropdown-skills" @click="pickSkill" class="flex-grow:1">
+          <div class="mb-3">
+            <b-button class="mr-2 mb-2" variant="primary" 
+              v-for="set in createdTeamSkillSet" 
+              :key="set.id"
+            >{{set.skill}} | {{convertSkill(set.level)}}
+            </b-button>
+          </div>
+          <div>
+            <select id="dropdown-skills" @click="pickSkill" class="custom-select mb-3">
               <option disabled selected>Pick Skill</option>
               <option value="JavaScript">JavaScript</option>
               <option value="Java">Java</option>
@@ -244,14 +240,16 @@
               <option value="Go">Go</option>
               <option value="Kotlin">Kotlin</option>
             </select>
-            <select id="dropdown-level" @click="pickLevel" flex-grow="1">
+            <select id="dropdown-level" @click="pickLevel" class="custom-select mb-3">
               <option disabled selected>Pick Level</option>
               <option value="1">Beginner</option>
               <option value="2">Intermediate</option>
               <option value="3">Advance</option>
               <option value="4">Expert</option>
             </select>
-            <b-button variant="outline-primary" @click="addSkillSet">Add Skill Set</b-button>
+            <div class="d-flex justify-content-end">
+              <b-button variant="outline-primary" @click="addSkillSet">Add Skill Set</b-button>
+            </div>
           </div>
           <div class="d-flex justify-content-end mt-3">
             <b-button @click.prevent="createTeam" variant="primary">Create</b-button>
@@ -303,6 +301,12 @@ export default {
     TeamItem
   },
   methods: {
+    convertSkill (e) {
+      if(e == 1) return 'Beginner'
+      else if(e == 2) return 'Intermediate'
+      else if(e == 3) return 'Advance'
+      else if(e == 4) return 'Expert'
+    },
     fetchEvent () {
       this.$store.dispatch('getSingleEvent', this.$route.params.id)
         .then(({ data }) => {
@@ -319,10 +323,11 @@ export default {
           }
         })
         .catch((err) => {
+          console.log(err)
           swal.fire({
             icon: 'error',
             title: 'Oops...',
-            text: err.response.data.errors
+            text: err.response.data
           })
         })
     },
@@ -371,12 +376,17 @@ export default {
       }
     },
     handleEditable () {
-      if (this.isEdit === 'notEditable') {
-        this.isEdit = 'editable'
-        this.isShow = 'notEditable'
+      if (this.$store.state.user._id !== this.event.ownerId) {
+        return false
       } else {
-        this.isEdit = 'notEditable'
-        this.isShow = 'editable'
+        if (this.isEdit === 'notEditable') {
+          this.isEdit = 'editable'
+          this.isShow = 'notEditable'
+        } else {
+          this.isEdit = 'notEditable'
+          this.isShow = 'editable'
+        }
+
       }
     },
     updateField (field) {
@@ -458,7 +468,7 @@ export default {
         id: this.$route.params.id,
         name: this.teamName,
         ownerId: this.$store.state.user._id,
-        max_size: this.event.team_size,
+        max_size: this.event.max_size,
         skillset: this.createdTeamSkillSet
       }
 
@@ -502,9 +512,7 @@ export default {
       const role = this.role
       const id = this.$store.state.user._id
       if (role === 'user') {
-        // return true
-
-        if ((this.event.teams && this.event.teams.includes(id)) || (this.event.teams && this.event.applicants.includes(id))) {
+        if (this.event.status !== 'open' || (this.event.teams.length > 0 && this.event.teams.includes(id)) || (this.event.teams.length > 0 && this.event.applicants.includes(id))) {
           return false
         } else {
           return true

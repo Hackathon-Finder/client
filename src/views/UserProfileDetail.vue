@@ -47,11 +47,11 @@
                   <div class="d-flex align-items-center mt-5">
                       <button disabled class="btn btn-warning btn-sm mr-3" style="width: 20px; height: 10px; cursor: auto"></button> 
                       <div>
-                        <p style="margin: 0; padding: 0">Verify skillset</p>
+                        <p style="margin: 0; padding: 0">Verified skillset</p>
                       </div>
-                      <button disabled class="btn btn-warning btn-sm mr-3 ml-5" style="width: 20px; height: 10px; cursor: auto"></button> 
+                      <button disabled class="btn btn-success btn-sm mr-3 ml-5" style="width: 20px; height: 10px; cursor: auto"></button> 
                       <div>
-                        <p style="margin: 0; padding: 0">Verify skillset</p>
+                        <p style="margin: 0; padding: 0">Unverified skillset</p>
                       </div>
                   </div>
                 </div>
@@ -66,12 +66,12 @@
                     <div class="card-body">
                       <blockquote class="blockquote mb-0">
                         <p>{{ review.comment }}</p>
-                        <footer v-if="review.rank == 1" class="blockquote-footer"><i class="fas fa-star" style="color: #fd7e13"></i> <cite class="ml-3">{{ review.comment.id_user.name }}</cite></footer>
-                        <footer v-else-if="review.rank == 2" class="blockquote-footer"><i v-for="index in 2" :key="index" class="fas fa-star" style="color: #fd7e13"></i><cite class="ml-3">{{ review.comment.id_user.name }}</cite></footer>
-                        <footer v-else-if="review.rank == 3" class="blockquote-footer"><i v-for="index in 3" :key="index" class="fas fa-star" style="color: #fd7e13"></i><cite class="ml-3">{{ review.comment.id_user.name }}</cite></footer>
-                        <footer v-else-if="review.rank == 4" class="blockquote-footer"><i v-for="index in 4" :key="index" class="fas fa-star" style="color: #fd7e13"></i><cite class="ml-3">{{ review.comment.id_user.name }}</cite></footer>
-                        <footer v-else-if="review.rank == 5" class="blockquote-footer"><i v-for="index in 5" :key="index" class="fas fa-star" style="color: #fd7e13"></i><cite class="ml-3">{{ review.comment.id_user.name }}</cite></footer>
-                        <footer v-else class="blockquote-footer"><cite class="ml-3">{{ review.comment.id_user.name }}</cite></footer>
+                        <footer v-if="review.rank == 1" class="blockquote-footer"><i class="fas fa-star" style="color: #fd7e13"></i> <cite class="ml-3">{{ review.id_user.name }}</cite></footer>
+                        <footer v-else-if="review.rank == 2" class="blockquote-footer"><i v-for="index in 2" :key="index" class="fas fa-star" style="color: #fd7e13"></i><cite class="ml-3">{{ review.id_user.name }}</cite></footer>
+                        <footer v-else-if="review.rank == 3" class="blockquote-footer"><i v-for="index in 3" :key="index" class="fas fa-star" style="color: #fd7e13"></i><cite class="ml-3">{{ review.id_user.name }}</cite></footer>
+                        <footer v-else-if="review.rank == 4" class="blockquote-footer"><i v-for="index in 4" :key="index" class="fas fa-star" style="color: #fd7e13"></i><cite class="ml-3">{{ review.id_user.name }}</cite></footer>
+                        <footer v-else-if="review.rank == 5" class="blockquote-footer"><i v-for="index in 5" :key="index" class="fas fa-star" style="color: #fd7e13"></i><cite class="ml-3">{{ review.id_user.name }}</cite></footer>
+                        <footer v-else class="blockquote-footer"><cite class="ml-3">{{ review.id_user.name }}</cite></footer>
                       </blockquote>
                     </div>
                   </div>
