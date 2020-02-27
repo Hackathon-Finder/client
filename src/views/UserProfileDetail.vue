@@ -45,10 +45,14 @@
                     {{ convertSkill(skillset.level) }}
                   </button>
                   <div class="d-flex align-items-center mt-5">
-                    <button disabled class="btn btn-warning btn-sm mr-3" style="width: 20px; height: 10px; cursor: auto"></button> 
-                    <div>
-                      <p style="margin: 0; padding: 0">Verify skillset</p>
-                    </div>
+                      <button disabled class="btn btn-warning btn-sm mr-3" style="width: 20px; height: 10px; cursor: auto"></button> 
+                      <div>
+                        <p style="margin: 0; padding: 0">Verify skillset</p>
+                      </div>
+                      <button disabled class="btn btn-warning btn-sm mr-3 ml-5" style="width: 20px; height: 10px; cursor: auto"></button> 
+                      <div>
+                        <p style="margin: 0; padding: 0">Verify skillset</p>
+                      </div>
                   </div>
                 </div>
                 <div v-else class="ml-3">
