@@ -2,9 +2,9 @@
   <div @click="$router.push(`/team/${team._id}`)">
     <div class="d-flex align-items-center header-wrapper">
       <div>{{team.name}}</div>
-      <div class="ml-auto">
+      <!-- <div class="ml-auto">
         <b-button size="sm" variant="primary" v-if="canJoin">Join</b-button>
-      </div>
+      </div> -->
     </div>
     <hr />
     <div class="body-wrapper">
@@ -29,16 +29,16 @@ export default {
     }
   },
   computed: {
-    canJoin () {
-      if (
-        this.team.status === 'open' && 
-        this.$store.state.user._id !== this.team.ownerId &&
-        this.$store.state.user.role !== 'organizer') {
-        return true
-      } else {
-        return false
-      }
-    }
+    // canJoin () {
+    //   if (
+    //     this.team.status === 'open' && 
+    //     this.$store.state.user._id !== this.team.ownerId &&
+    //     this.$store.state.user.role !== 'organizer') {
+    //     return true
+    //   } else {
+    //     return false
+    //   }
+    // }
   }
 }
 </script>

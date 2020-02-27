@@ -137,7 +137,7 @@
                     size="sm"
                     variant="outline-primary"
                     class="ml-auto"
-                    @click="updateField('team_size')"
+                    @click="updateField('max_size')"
                   >
                     Set Max Member
                   </b-button>
@@ -319,10 +319,11 @@ export default {
           }
         })
         .catch((err) => {
+          console.log(err)
           swal.fire({
             icon: 'error',
             title: 'Oops...',
-            text: err.response.data.errors
+            text: err.response.data
           })
         })
     },
@@ -371,12 +372,17 @@ export default {
       }
     },
     handleEditable () {
-      if (this.isEdit === 'notEditable') {
-        this.isEdit = 'editable'
-        this.isShow = 'notEditable'
+      if (this.$store.state.user._id !== this.event.ownerId) {
+        return false
       } else {
-        this.isEdit = 'notEditable'
-        this.isShow = 'editable'
+        if (this.isEdit === 'notEditable') {
+          this.isEdit = 'editable'
+          this.isShow = 'notEditable'
+        } else {
+          this.isEdit = 'notEditable'
+          this.isShow = 'editable'
+        }
+
       }
     },
     updateField (field) {
@@ -458,7 +464,7 @@ export default {
         id: this.$route.params.id,
         name: this.teamName,
         ownerId: this.$store.state.user._id,
-        max_size: this.event.team_size,
+        max_size: this.event.max_size,
         skillset: this.createdTeamSkillSet
       }
 
@@ -502,9 +508,7 @@ export default {
       const role = this.role
       const id = this.$store.state.user._id
       if (role === 'user') {
-        // return true
-
-        if ((this.event.teams && this.event.teams.includes(id)) || (this.event.teams && this.event.applicants.includes(id))) {
+        if (this.event.status !== 'open' || (this.event.teams.length > 0 && this.event.teams.includes(id)) || (this.event.teams.length > 0 && this.event.applicants.includes(id))) {
           return false
         } else {
           return true
