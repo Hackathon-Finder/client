@@ -2,18 +2,23 @@
   <b-container>
     <b-row>
       <b-col cols="12">
-        <h2>{{team.name}}</h2>
+        <h2 class="mt-3">{{team.name}}</h2>
+          <b-badge variant="warning" class="mr-1 mb-3" v-for="skill in team.skillset" :key="skill._id">
+            {{skill.skill}} - {{convertSkill(skill.level)}}
+          </b-badge>
         <div class="mb-5">
-          <b-button v-if="canJoin && !alreadyJoin" @click="joinTeam">
+          <b-button variant="primary" v-if="canJoin && !alreadyJoin" @click="joinTeam">
             Join
           </b-button>
           <b-button
+            variant="primary"
             class="mr-2" 
             v-if="team.ownerId._id === $store.state.user._id && team.eventId.status === 'open'" 
             @click="lockTeam">
             Lock Team
           </b-button>
           <b-button 
+            variant="outline-danger"
             v-if="team.ownerId._id === $store.state.user._id && team.eventId.status === 'open'" 
             @click="deleteTeam">
             Delete
@@ -22,58 +27,88 @@
       </b-col>
       <b-col cols="12" sm="12" md="12" lg="8" xl="9">
         <div class="mb-5">
-          Members
+          <h4>Members</h4>
           <hr/>
-          <ul class="members-wrapper" v-for="(member,index) in team.members" :key="index">
-            <div v-if="member._id === team.ownerId._id">
-              <div>Team Leader</div>
-              <div>{{member.name}}</div>
+          <div class="d-flex flex-wrap">
+            <div
+              v-for="(member,index) in team.members" 
+              :key="index"
+              class="mr-3 mb-3"
+            >
+              <div v-if="member._id === team.ownerId._id" class="member-wrapper team-lead">
+                <div class="d-flex">
+                  <div @click="$router.push(`/users/${member._id}`)" class="user-pict">
+                    <img :src="member.pict" alt="">
+                  </div>
+                  <div class="mb"><i class="fas fa-crown"></i> &nbsp;{{member.name}}</div>
+                </div>
+              </div>
+              <div v-else class="member-wrapper">
+                <div class="d-flex">
+                  <div @click="$router.push(`/users/${member._id}`)" class="user-pict">
+                    <img :src="member.pict" alt="">
+                  </div>
+                  <div>
+                    <div>{{member.name}}</div>
+                    <b-button
+                      variant="outline-danger"
+                      class="mr-1"
+                      v-if="$store.state.user._id === team.ownerId._id && team.eventId.status === 'open'"
+                      size="sm"
+                      @click="removeMemberFromTeam(member._id)">
+                      <i class="fas fa-times"></i> Remove
+                    </b-button>
+                    <b-button
+                      variant="outline-primary"
+                      v-if="$store.state.user._id === team.ownerId._id && team.eventId.status === 'ended'" 
+                      size="sm" v-b-modal.modal-review @click="currentReview = member._id">
+                      <i class="fas fa-star"></i> Review
+                    </b-button>
+                  </div>
+                </div>
+              </div>
             </div>
-            <div v-else >
-              <li>
-                <span @click="$router.push(`/users/${member._id}`)">{{member.name}}</span>
-                <b-button
-                  class="ml-3 mr-1"
-                  v-if="$store.state.user._id === team.ownerId._id && team.eventId.status === 'open'"
-                  size="sm"
-                  @click="removeMemberFromTeam(member._id)">
-                  <i class="fas fa-times"></i>
-                </b-button>
-                <b-button
-                  class="ml-3"
-                  v-if="$store.state.user._id === team.ownerId._id && team.eventId.status === 'ended'" 
-                  size="sm" v-b-modal.modal-review @click="currentReview = member._id">
-                  Review
-                </b-button>
-              </li>
-            </div>
-          </ul>
-
+          </div>
         </div>
+  
         <div>
-
-          Applicants
+          <h4>Applicants</h4>
           <hr/>
-          <ul class="applicant-wrapper" v-for="applicant in team.applicants" :key="applicant._id">
-            <li>
-              <span @click="$router.push(`/users/${applicant._id}`)">
-                {{applicant.name}}
-              </span>
-              <b-button
-                class="ml-3 mr-1"
-                v-if="team.ownerId._id === $store.state.user._id"
-                size="sm" 
-                @click="addMemberToTeam(applicant._id)">
-                <i class="fas fa-plus"></i>
-              </b-button>
-              <b-button
-                v-if="team.ownerId._id === $store.state.user._id || applicant._id === $store.state.user._id"
-                size="sm" 
-                @click="removeApplicantFromTeam(applicant._id)">
-                <i class="fas fa-times"></i>
-              </b-button>
-            </li>
-          </ul>
+          <div class="d-flex flex-wrap">
+            <div
+              v-for="applicant in team.applicants" 
+              :key="applicant._id"
+              class="mr-3 mb-3"
+            >
+              <div class="member-wrapper">
+                <div class="d-flex">
+                  <div @click="$router.push(`/users/${applicant._id}`)" class="user-pict">
+                    <img :src="applicant.pict" alt="">
+                  </div>
+                  <div>
+                    <div>{{applicant.name}}</div>
+                    <b-button
+                      variant="outline-primary"
+                      class="mr-1"
+                      v-if="team.ownerId._id === $store.state.user._id"
+                      size="sm" 
+                      @click="addMemberToTeam(applicant._id)">
+                      <i class="fas fa-plus"></i>
+                      Add Member
+                    </b-button>
+                    <b-button
+                      variant="outline-danger"
+                      v-if="team.ownerId._id === $store.state.user._id || applicant._id === $store.state.user._id"
+                      size="sm" 
+                      @click="removeApplicantFromTeam(applicant._id)">
+                      <i class="fas fa-times"></i>
+                      Remove Member
+                    </b-button>
+                  </div>
+                </div>
+              </div>
+          </div>
+          </div>
         </div>
       </b-col>
 
@@ -84,25 +119,29 @@
           team.eventId.status === 'open'">
           Recommended User
           <hr/>
-          <ul class="recomendation-wrapper" v-for="user in userRecommendation" :key="user._id">
+          <div class="recomendation-wrapper" v-for="user in userRecommendation" :key="user._id">
             <div
-              class="d-flex justify-content-between"
+              class="d-flex align-items-center"
               style="width: 100%"
               v-if="user._id !== team.ownerId._id">
-              <div>
-                <strong>{{user.name}}</strong>
+              <div class="user-pict">
+                <img :src="user.pict" alt="">
               </div>
-              <div>
-                <b-button
-                  v-if="team.eventId.status === 'open'"
-                  size="sm" 
-                  class="mr-2" 
-                  @click="inviteUser(user._id)">
-                  Invite
-                </b-button>
-              </div>
+              <strong>{{user.name}}</strong>
+              <b-button
+                style="margin-left: auto"
+                v-if="team.eventId.status === 'open'"
+                size="sm" 
+                @click="inviteUser(user._id)">
+                <i class="fas fa-paper-plane"></i> Invite
+              </b-button>
             </div>
-          </ul>
+            <b-badge variant="warning" class="ml-1 mt-3 mb-5" v-for="skill in user.skillset" :key="skill._id">
+              <div class="wrappe" v-if="user._id !== team.ownerId._id">
+                {{skill.skill}} - {{convertSkill(skill.level)}}
+              </div>
+            </b-badge>
+          </div>
         </div>
         <b-modal id="modal-review" title="Review Performance" hide-footer>
           <b-form id="form-wrapper" @submit.prevent="reviewUser">
@@ -116,7 +155,7 @@
             ></b-form-textarea>
             <div class="d-flex">
               Performance
-              <select class="ml-3" id="dropdown-performance" v-model="pickRate">
+              <select class="custom-select ml-3" id="dropdown-performance" v-model="pickRate">
                 <option disabled selected>Pick performance level</option>
                 <option value="0">0</option>
                 <option value="1">1</option>
@@ -333,6 +372,12 @@ export default {
             text: err.response.data.errors
           })
         })
+    },
+    convertSkill (e) {
+      if(e == 1) return 'Beginner'
+      else if(e == 2) return 'Intermediate'
+      else if(e == 3) return 'Advance'
+      else if(e == 4) return 'Expert'
     }
   },
   created () {
@@ -368,6 +413,36 @@ export default {
 }
 </script>
 
-<style>
-
+<style scoped>
+ul {
+  padding: 0;
+}
+.user-pict {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin-right: 1rem;
+}
+.user-pict img {
+  width: 100%;
+}
+.member-wrapper {
+  width: 100%;
+  border: 1px solid #c2c2c2;
+  border-radius: 8px;
+  padding: 0.8rem;
+  cursor: pointer;
+  transition: 0.4s box-shadow;
+}
+.member-wrapper:hover {
+  box-shadow: 0 20px 10px -20px rgba(0, 0, 0, 0.8);
+  transition: 0.4s box-shadow;
+}
+.member-wrapper.team-lead {
+  background-color: #FEC244;
+}
 </style>

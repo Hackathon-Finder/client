@@ -25,6 +25,7 @@
           </b-navbar-nav>
           <b-navbar-nav v-else>
             <!-- <b-nav-item href="#" @click.prevent="changePage('listArticle')">Home</b-nav-item> -->
+            <b-nav-item to="/home" >Home</b-nav-item>
             <b-nav-item to="/profile" >Profile</b-nav-item>
             <b-nav-item @click.prevent="logout">Logout</b-nav-item>
           </b-navbar-nav>
